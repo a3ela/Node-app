@@ -71,7 +71,7 @@ app.post("/api/notes", (req, res) => {
   res.json(note);
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`server is running on port ${PORT}`);
 });
