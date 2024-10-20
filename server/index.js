@@ -1,38 +1,29 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
+const dotenv = require("dotenv");
+const Note = require("./models/note");
 const app = express();
 
+// Load environment variables from .env file
+dotenv.config();
+
+// mideleware
 app.use(express.json());
 app.use(cors());
 app.use(express.static("dist"));
 
-let notes = [
-  {
-    id: "1",
-    content: "HTML is easy",
-    important: true,
-  },
-  {
-    id: "2",
-    content: "Browser can execute only JavaScript",
-    important: true,
-  },
-  {
-    id: "3",
-    content: "GET and POST are the most important methods of HTTP protocol",
-    important: true,
-  },
-];
-
 app.get("/", (req, res) => {
   res.send("<h1>Hello World</h1>");
 });
+
 /// getting all notes
 app.get("/api/notes", (req, res) => {
-  res.json(notes);
+  Note.find({}).then((notes) => {
+    res.json(notes);
+  });
 });
+
 /// getting a single note
 app.get("/api/notes/:id", (req, res) => {
   const id = req.params.id;
@@ -43,17 +34,20 @@ app.get("/api/notes/:id", (req, res) => {
     res.status(404).end();
   }
 });
+
 /// delete a single note
 app.delete("/api/notes/:id", (req, res) => {
   const id = req.params.id;
   notes = notes.filter((note) => note.id !== id);
   res.status(204).end();
 });
+
 /// create a new note
 const generateId = () => {
   const maxId = notes.length > 0 ? Math.max(...notes.map((n) => n.id)) : 0;
   return maxId + 1;
 };
+
 app.post("/api/notes", (req, res) => {
   const maxId = notes.length > 0 ? Math.max(...notes.map((n) => n.id)) : 0;
   const note = req.body;
