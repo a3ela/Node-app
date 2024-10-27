@@ -61,7 +61,7 @@ notesRouter.post("/", (req, res, next) => {
 });
 
 // update a single note
-notesRouter.put("/api/notes/:id", (req, res, next) => {
+notesRouter.put("/:id", (req, res, next) => {
   const body = req.body;
 
   const note = {
