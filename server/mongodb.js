@@ -35,11 +35,6 @@ const Note = mongoose.model("Note", noteSchema);
 //   mongoose.connection.close();
 // });
 
-Note.find().then((result) => {
-  result.forEach((note) => {
-    if (note.important) {
-      console.log(note.content);
-    }
-  });
-  mongoose.connection.close();
+Note.find({}).then((result) => {
+  console.log(result);
 });
