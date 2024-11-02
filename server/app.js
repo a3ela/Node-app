@@ -4,12 +4,15 @@ const logger = require("./utils/logger");
 const express = require("express");
 require("express-async-errors");
 const app = express();
-const notesRouter = require("./controllers/notes");
+
 const cors = require("cors");
 const mongoose = require("mongoose");
 
-mongoose.set("strictQuery", false);
+// controlleers or routers
+const notesRouter = require("./controllers/notes");
+const usersRouter = require("./controllers/users");
 
+mongoose.set("strictQuery", false);
 logger.info("mongoDB_url: ", config.MONGODB_URL);
 
 mongoose
@@ -27,6 +30,7 @@ app.use(express.json());
 app.use(middleware.requestLogger);
 
 app.use("/api/notes", notesRouter);
+app.use("/api/users", usersRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
